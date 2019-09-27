@@ -1,0 +1,43 @@
+/*#region tela do login*/
+  .telaCompleta{
+    background-color: whitesmoke;
+    position: absolute;    
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+
+  #centralizar {
+    position:relative; 
+    margin-top:auto;
+    margin-left:auto;    
+    color: #09d3ac;
+    text-align: center;
+  }
+
+  #componenteLogin{
+    position: relative;
+    display: block;
+    text-align: center;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px; 
+}
+
+  #tituloCentro{
+    position: relative;
+    margin-bottom: 25px;
+  }
+
+  #linhaBotaoCentro{
+    position: relative;
+    text-align: center;
+  }
+
+  #botaoCentro{
+    
+  }
+  
+/*#endregion*/
+
