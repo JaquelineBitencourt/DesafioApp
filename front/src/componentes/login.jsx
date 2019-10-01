@@ -10,7 +10,7 @@ const Login = () => (
             <Form.Group as={Col} md='5' id="componenteLogin" controlId='formHorizontal'>
                 <Col >
                     <h1 id="tituloCentro">Login do Chimas</h1>
-                    <Form.Control placeholder='Digite seu nome' />
+                    <Form.Control placeholder='Digite seu nome'/>
                 </Col>
             </Form.Group>
         </Form>
