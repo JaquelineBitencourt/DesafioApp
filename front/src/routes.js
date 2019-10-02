@@ -8,12 +8,36 @@ import PaginaHome from './pages/home/paginaHome';
 
 import { Switch, Route } from 'react-router-dom';
 
-export const Routes = () => {
-    return(
-        <Switch>
-            <Route exact path="/"component={PaginaLogin} />
-            <Route path="/home"component={PaginaHome}/>
-            <Route component={() => <h1>Page 404!</h1>}/>
-        </Switch>
-    )
+// export const Routes = () => {
+//     return(
+//         <Switch>
+//             <Route exact path="/"component={PaginaLogin} />
+//             <Route path="/home"component={PaginaHome}/>
+//             <Route component={() => <h1>Page 404!</h1>}/>
+//         </Switch>
+//     )
+// }
+
+
+export default class Routes extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+    }
+
+
+    render() {
+        return (
+         <React.Fragment>
+            <Switch>
+                <Route exact path="/" component = {PaginaLogin}/>
+                <Route path="/home" component = {PaginaHome}/>
+            </Switch>
+
+
+         </React.Fragment>
+     )
+    }
+    
 }

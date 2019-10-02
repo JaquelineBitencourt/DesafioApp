@@ -1,14 +1,18 @@
 
-import React from 'react'
+import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button'
 
+export default class Botao extends Component{
+    constructor(props){
+        super(props)
 
+    }
 
-const Botao = () => (
-     <div id='linhaBotaoCentro'>
-        <Button variant='primary' type='submit' id="botaoCentro"size='sm'>Entrar</Button>
-    </div>
-)
-
-
-export default Botao
+    render(){
+        return(
+            <div id="linhaBotaoCentro">
+                <Button variant="primary" type="submit" id="botaoCentro" size="lg">Entrar</Button>
+            </div>
+        )
+    }
+}

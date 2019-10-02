@@ -1,59 +1,60 @@
 import React from 'react'
-import Button from '../../componentes/botoes'
+import Botao from '../../componentes/botoes'
 import { Link } from 'react-router-dom'
 import { REQUEST } from '../../requestModuleReact';
+import axios from 'axios'
 
-const PaginaHome = () => (
-    <div>
-        <Link to="/">
-            <Button />
-        </Link>
-        {/* <React.Suspense fallback={<span>Carregando...</span>}>
-            <Cachorro id="meu-cachorro"></Cachorro>
-        </React.Suspense> */}
 
-        <React.Suspense fallback={<span>Carregando...</span>}>
-        <Teste />
-        </React.Suspense>
 
-    </div>
+export default class PaginaHome extends React.Component {
+    constructor(props) {
+        super(props)
 
-)
-export default PaginaHome
-
-// function Cachorro(props) {
-//     //Imagem do Cachorro:
-//     let dogImage;
-
-//     //OK
-//     let callback_OK = (response) => {
-//         let url = response.message;
-//         dogImage = <img src={url} />;
-//     }
-
-//     //Error:
-//     let callback_Error = (response) => {
-//         dogImage = <h1>deu ruim</h1>
-//     }
-
-//     //Chamar API:
-//     REQUEST.Get('https://dog.ceo/api/breeds/image/random', callback_OK, callback_Error)
-
-//     //Retorno:
-//     return dogImage;
-// }
-
-let cache = {}
-
-function Teste(props) {
-    let requestStatus = cache[props.id];
-    if (requestStatus && requestStatus.done) {
-        return <div>{requestStatus.data.nome}, {requestStatus.data.idade}</div>;
+        this.state = {
+            pessoa: {
+                nome: null,
+                idade: null
+            },
+            pessoapost: {
+                nome: null,
+            }
+        }
     }
 
-    else if (requestStatus && !requestStatus.done) {
-        throw requestStatus.thenable;
+    render() {
+        return (
+            <div>
+                <h1>
+                    Deu Bom
+                    <Link to="/">
+                        <Botao />
+                    </Link>
+                        nome : {this.state.pessoa.nome} <br />
+                        idade : {this.state.pessoa.idade} <br></br>
+                        nome post : {this.state.pessoapost.nome} <br />
+                </h1>
+            </div>
+        )
     }
-        cache[props.id] = REQUEST.Get('https://localhost:44327/api/autenticar/dsa')
-        throw cache[props.id].thenable;
+
+    //exemplo de como consumir api
+    componentDidMount() {
+        axios.get('https://localhost:44327/api/autenticar/dsa')
+            .then(res => {
+                let pessoas = this.state.pessoa
+                pessoas.nome = res.data.nome;
+                pessoas.idade = res.data.idade;
+                this.setState({ pessoa: pessoas })
+            })
+
+
+        let sobrenome = "Henrique Oliveira Ferreira"
+        axios.post('https://localhost:44327/api/autenticar/asd', {sobrenome})
+        .then(res => {
+            let pessoapost = this.state.pessoapost
+            pessoapost.nome = res.data;
+            this.setState({ pessoapost : pessoapost})
+        })
+    }
+
 }
