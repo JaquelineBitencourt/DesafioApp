@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 const Login = () => (
     <div id='centralizar'>
         <Form>
-            <Form.Group as={Col} md='5' id="componenteLogin" controlId='formHorizontal'>
+            <Form.Group as={Col} md='3' id="componenteLogin" controlId='formHorizontal'>
                 <Col >
                     <h1 id="tituloCentro">Login do Chimas</h1>
                     <Form.Control placeholder='Digite seu nome' />
