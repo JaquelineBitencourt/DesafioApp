@@ -34,8 +34,6 @@ export default class Routes extends React.Component {
                 <Route exact path="/" component = {PaginaLogin}/>
                 <Route path="/home" component = {PaginaHome}/>
             </Switch>
-
-
          </React.Fragment>
      )
     }
