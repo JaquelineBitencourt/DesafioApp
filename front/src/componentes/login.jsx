@@ -5,8 +5,9 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 //import Row from 'react-bootstrap/Row'
+import {Redirect, Link, withRouter } from 'react-router-dom'
 
-export default class Login extends React.Component{
+class Login extends React.Component{
     constructor(props){
         super(props)
 
@@ -25,16 +26,19 @@ export default class Login extends React.Component{
         let NomeDoUsuario = this.state.nome
         axios.post('https://localhost:44327/api/autenticar/validaNomeUsuario', {NomeDoUsuario})
         .then(res => {
-            console.log(res.data)
+            if(res.data == true){
+                localStorage.setItem("login", NomeDoUsuario);
+                this.props.history.push("/home");
+            }
         })
     }
+    
 
     render(){
         const {nome} = this.state
         return(
             <div id="centralizar">
-                <h1>{nome}</h1>
-                <Form onSubmit={e => this.handleSubmit(e)}>
+                <Form  onSubmit={e => this.handleSubmit(e)}>
                     <Form.Group as={Col} md='5' id="componenteLogin" >
                         <Col>
                             <h1 id="tituloCentro">Login do Chimas</h1>
@@ -48,3 +52,5 @@ export default class Login extends React.Component{
         )
     }
 }
+
+export default withRouter(Login);

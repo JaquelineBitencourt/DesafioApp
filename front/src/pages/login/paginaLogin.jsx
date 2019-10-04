@@ -32,7 +32,4 @@ export default class PaginaLogin extends React.Component {
         )
     }
 
-
-
-
 }

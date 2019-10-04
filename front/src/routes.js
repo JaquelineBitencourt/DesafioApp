@@ -23,9 +23,7 @@ export default class Routes extends React.Component {
 
     constructor(props) {
         super(props);
-
     }
-
 
     render() {
         return (
@@ -37,5 +35,7 @@ export default class Routes extends React.Component {
          </React.Fragment>
      )
     }
+
     
 }
+
