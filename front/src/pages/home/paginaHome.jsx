@@ -1,7 +1,6 @@
 import React from 'react'
 import Botao from '../../componentes/botoes'
 import { Link } from 'react-router-dom'
-import { REQUEST } from '../../requestModuleReact';
 import axios from 'axios'
 
 
@@ -30,7 +29,6 @@ export default class PaginaHome extends React.Component {
                         <Botao />
                     </Link>
                         nome : {this.state.pessoa.nome} <br />
-                        idade : {this.state.pessoa.idade} <br></br>
                         nome post : {this.state.pessoapost.nome} <br />
                 </h1>
             </div>
@@ -41,15 +39,17 @@ export default class PaginaHome extends React.Component {
     componentDidMount() {
         axios.get('https://localhost:44327/api/autenticar/dsa')
             .then(res => {
+
                 let pessoas = this.state.pessoa
-                pessoas.nome = res.data.nome;
-                pessoas.idade = res.data.idade;
+                pessoas.nome = res.data.nomeDoUsuario;
+
                 this.setState({ pessoa: pessoas })
             })
 
 
-        let sobrenome = "Henrique Oliveira Ferreira"
-        axios.post('https://localhost:44327/api/autenticar/asd', {sobrenome})
+        let NomeDoUsuario = "Henrique Oliveira Ferreira"
+        
+        axios.post('https://localhost:44327/api/autenticar/validaNomeUsuario', {NomeDoUsuario})
         .then(res => {
             let pessoapost = this.state.pessoapost
             pessoapost.nome = res.data;
