@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { Component } from 'react'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
@@ -7,7 +7,7 @@ import axios from 'axios'
 //import Row from 'react-bootstrap/Row'
 import {Redirect, Link, withRouter } from 'react-router-dom'
 
-class Login extends React.Component{
+class Login extends Component{
     constructor(props){
         super(props)
 

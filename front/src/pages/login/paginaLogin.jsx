@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Login from '../../componentes/login'
 import './paginaLogin.css'
 import { Link } from 'react-router-dom'
 
 
-export default class PaginaLogin extends React.Component {
+export default class PaginaLogin extends Component {
     constructor(props) {
         super(props)
 
