@@ -7,9 +7,28 @@ import axios from 'axios'
 //import Row from 'react-bootstrap/Row'
 import {Redirect, Link, withRouter } from 'react-router-dom'
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+const Login = () => (
+    <div id='centralizar'>
+        <Form>
+            <Form.Group as={Col} md='3' id="componenteLogin" controlId='formHorizontal'>
+                <Col >
+                    <h1 id="tituloCentro">Login do Chimas</h1>
+                    <Form.Control placeholder='Digite seu nome' />
+                </Col>
+            </Form.Group>
+        </Form>
+    </div>
+)
+=======
+export default class Login extends React.Component{
+=======
 class Login extends Component{
+>>>>>>> 261a6311435c90aa5c8cfcf7ed11a8e8af272215
     constructor(props){
         super(props)
+>>>>>>> 093ea430256c985430a4464de9107c651778053f
 
         this.state = {
             nome: ""
