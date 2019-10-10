@@ -19,10 +19,10 @@ export default class PaginaLogin extends Component {
 
             <div>
                 <h1>
-                    <Login nome="teste" />
-                    {/* <Link to="/home">
-                        <Botao/>
-                    </Link> */}
+                    <Login nome="" />
+                    <Link to="/home">
+                       
+                    </Link>
 
 
 

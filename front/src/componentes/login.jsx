@@ -24,7 +24,7 @@ class Login extends Component{
         e.preventDefault()
         console.log(this.state.nome)
         let NomeDoUsuario = this.state.nome
-        axios.post('https://localhost:44327/api/autenticar/validaNomeUsuario', {NomeDoUsuario})
+        axios.post('https://localhost:44327/api/autenticar/UsuarioLogado', {NomeDoUsuario})
         .then(res => {
             if(res.data == true){
                 localStorage.setItem("login", NomeDoUsuario);
