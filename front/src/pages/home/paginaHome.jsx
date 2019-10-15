@@ -4,7 +4,7 @@ import axios from 'axios'
 import Cronometro from '../../componentes/timer'
 import BotaoTerminei from '../../componentes/botaoTerminei'
 
-
+//rose insuportavel
 
 class PaginaHome extends Component {
     constructor(props) {
