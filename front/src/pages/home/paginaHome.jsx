@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import Timer from '../../componentes/timer'
+import Cronometro from '../../componentes/timer'
 import BotaoTerminei from '../../componentes/botaoTerminei'
 
 
@@ -73,24 +73,24 @@ class PaginaHome extends Component {
 
     componentDidMount() {
 
-        let NomeDoUsuario = ""
+        // let NomeDoUsuario = ""
 
-        axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
-            .then(result => {
-                let pessoapost = this.state.pessoapost
-                pessoapost.nome = result.data;
-                this.setState({ pessoapost: pessoapost })
-            })
+        // axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
+        //     .then(result => {
+        //         let pessoapost = this.state.pessoapost
+        //         pessoapost.nome = result.data;
+        //         this.setState({ pessoapost: pessoapost })
+        //     })
 
-        axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
-            .then(result => {
-                let pessoapost = this.state.pessoapost
+        // axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
+        //     .then(result => {
+        //         let pessoapost = this.state.pessoapost
 
-                console.log(result);
+        //         console.log(result);
 
-                // pessoapost.nome = result.data;
-                // this.setState({ pessoapost: pessoapost })
-            })
+        //         // pessoapost.nome = result.data;
+        //         // this.setState({ pessoapost: pessoapost })
+        //     })
 
     }
 
@@ -98,16 +98,10 @@ class PaginaHome extends Component {
     render() {
         return (
             <div>
-                <Timer />
-                {/* Aqui estou exibindo apenas os usuários logados na tela */}
+                <Cronometro />
+                {/* Aqui estou exibindo apenas os usuários logados na tela  */}
                 {this.state.pessoa.listaDeUsuarios.map((usuario) => (
                     <p>{!!usuario.logado && usuario.nomeDoUsuario} </p>))}
-
-
-
-
-
-
 
             </div>
         )
