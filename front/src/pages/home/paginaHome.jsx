@@ -7,6 +7,7 @@ import './paginaHome.css'
 
 
 
+
 class PaginaHome extends Component {
     constructor(props) {
         super(props)
@@ -62,7 +63,7 @@ class PaginaHome extends Component {
 
     componentDidMount() {      
 
-        let NomeDoUsuario = ""
+        // let NomeDoUsuario = ""
 
         
         axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })

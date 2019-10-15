@@ -21,7 +21,6 @@ export default class PaginaLogin extends Component {
                 <h1>
                     <Login nome="" />
                     <Link to="/home">
-                       
                     </Link>
 
 
