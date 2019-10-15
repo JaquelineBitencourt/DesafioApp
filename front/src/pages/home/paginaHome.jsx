@@ -16,17 +16,18 @@ class PaginaHome extends Component {
             pessoa: {
                 listaDeUsuarios: [],
                 error: null,
-                botaoTerminar: false,               
-                nome:'',
-                                       
-     
+                botaoTerminar: false,
+                nome: '',
+                chimarreador: ''
+
+
             },
             pessoapost: {
-                nome: null                
+                nome: null
             },
             segundos: '00',
             minutos: ''
-            
+
         }
     }
 
@@ -57,49 +58,77 @@ class PaginaHome extends Component {
                     // this.setState({ error });
                 })
 
-                
+
     }
 
 
-    componentDidMount() {      
+    componentDidMount() {
 
-        // let NomeDoUsuario = ""
+        this.logaUsuario();
+       
+    }
 
-        
+
+
+    logaUsuario = () => {
+        let NomeDoUsuario = ""
+
+
         axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
             .then(result => {
                 let pessoapost = this.state.pessoapost
                 pessoapost.nome = result.data;
                 this.setState({ pessoapost: pessoapost })
 
-              
+                this.buscaUsuarios();
             })
 
     }
 
+    btnSetaChimarreando = (idUsuario) => {
 
-    render() {  
-        
+        let parametroChimarreando = {
+            IdUsuario: idUsuario
+        }     
+
+        axios.post('https://localhost:44327/api/autenticar/SetaChimarreando', parametroChimarreando)
+            .then(result => {
+                // let chimarreador = this.state.chimarreador
+                // let a = result.data;
+                
+                this.buscaUsuarios();
+            })
+    }
+
+
+
+
+
+    render() {
         return (
-            
+
             <div className="pgnListaUsuarios">
-                <Timer />                        
+                <Timer />
                 {/* <Chimarreador />     */}
                 <h3>Lista de participantes da roda do chimarrão</h3>
-                
-               <ul>                   
-                 {/* Exibindo apenas os usuários logados na tela  */}
-                {this.state.pessoa.listaDeUsuarios.map((usuario, index) => (                    
-                    <a key = {index}>                        
-                    <p>{!!usuario.logado && usuario.chimarreando==false && usuario.nomeDoUsuario}</p>
-                    
-                    {/* O usuário que está com a cuia na mão fica com a cor verde  */}
-                    <p style={{color: 'green'}}>{usuario.chimarreando && usuario.nomeDoUsuario}</p></a> 
-                    ))}      
-                </ul> 
-                <p> <input type="button" value="Próximo" onClick={this.btnProximo}/></p>
-               
-            </div>
+
+                <ul>
+                    {/* Exibindo apenas os usuários logados na tela  */}
+                    {this.state.pessoa.listaDeUsuarios.map((usuario, index) => (
+                        <a key={index}>
+                            {(usuario.logado && usuario.chimarreando) &&
+                                < p style={{ color: 'green' }}> {usuario.nomeDoUsuario} </p>
+                            }
+
+                            {(usuario.logado && !usuario.chimarreando) &&
+                                <p style={{ color: 'red' }}> {usuario.nomeDoUsuario} <input type="button" value="Setar chimarreando" onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /> </p>
+                            }
+                        </a>
+                    ))}
+                </ul>
+                <p> <input type="button" value="Próximo" onClick={this.btnProximo} /></p>
+
+            </div >
 
         )
     }
