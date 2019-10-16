@@ -69,7 +69,6 @@ class Chat extends Component {
                     _requisicoes++;
 
                     _this.setState({ CR_Requisicoes: _requisicoes });
-
                     _this.state.wsCronometro.invoke("AtualizaCronometro");
                 }, 10000, this);
             });
@@ -94,6 +93,7 @@ class Chat extends Component {
     render() {
         return (
             <div>
+
                 <div id="cronometro" >{this.state.CR_Tempo}</div>
                 <div id="requisicoes" >{this.state.CR_Requisicoes}</div>
 

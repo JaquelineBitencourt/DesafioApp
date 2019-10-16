@@ -27,15 +27,16 @@ class Login extends Component{
     
     handleSubmit(e){
         e.preventDefault()
-        console.log(this.state.nome)
         let NomeDoUsuario = this.state.nome
         axios.post('https://localhost:44327/api/autenticar/LogaUsuario', {NomeDoUsuario})
         .then(res => {
-            
+            console.log("res", res)
             if(res.data.logado === true){
+                console.log("ta no if")
                 localStorage.setItem("login", NomeDoUsuario);
                 this.props.history.push("/home");
             }
+            console.log("oi")
         })
     }
 

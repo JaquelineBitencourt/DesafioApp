@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Timer from '../../componentes/timer'
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import './paginaHome.css'
 
 
-
-//rose insuportavel
 
 class PaginaHome extends Component {
     constructor(props) {
@@ -26,13 +25,19 @@ class PaginaHome extends Component {
                 nome: null
             },
             segundos: '00',
-            minutos: ''
-
+            minutos: '',
+            wsTerminar: null
         }
     }
 
 
     componentWillMount() {
+        const conexao_wsTerminar = new HubConnectionBuilder()
+            .withUrl("http://localhost:5001/Usuario")
+            .build();
+
+        this.setState({ wsTerminar: conexao_wsTerminar });
+
         // let user = localStorage.getItem("login")
         // if (user == null) {
         //     console.log("teste", user)
@@ -64,8 +69,22 @@ class PaginaHome extends Component {
 
     componentDidMount() {
 
+        this.state.wsTerminar.start() // -> espera a conexão estabilizar
+        .then(() => {
+            this.state.wsTerminar.invoke("BuscaUsuario");
+        });
+
         this.logaUsuario();
-       
+
+        this.state.wsTerminar.on("RespostaBuscaUsuario",
+            data => {
+                console.log("chegouaqui", data)
+                let _p = this.state.pessoa;
+                _p.listaDeUsuarios = data;
+                
+                this.setState({pessoa:_p});
+                console.log(this.state.pessoa)
+            });
     }
 
 
@@ -85,20 +104,34 @@ class PaginaHome extends Component {
 
     }
 
+    btnProximo = () => {
+        
+        axios.get('https://localhost:44327/api/autenticar/ProximoChimarreando')
+        .then(res => {
+
+        })
+        this.state.wsTerminar.invoke("BuscaUsuario");
+    }
+
+
+
+
     btnSetaChimarreando = (idUsuario) => {
 
         let parametroChimarreando = {
             IdUsuario: idUsuario
-        }     
+        }
 
         axios.post('https://localhost:44327/api/autenticar/SetaChimarreando', parametroChimarreando)
             .then(result => {
                 // let chimarreador = this.state.chimarreador
                 // let a = result.data;
-                
+
                 this.buscaUsuarios();
             })
     }
+
+
 
 
 
@@ -126,7 +159,7 @@ class PaginaHome extends Component {
                         </a>
                     ))}
                 </ul>
-                <p> <input type="button" value="Próximo" onClick={this.btnProximo} /></p>
+                <p> <input type="button" value="Próximo" onClick={() => this.btnProximo()} /></p>
 
             </div >
 
