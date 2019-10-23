@@ -97,7 +97,7 @@ class Chat extends Component {
                 <div id="cronometro" >{this.state.CR_Tempo}</div>
                 <div id="requisicoes" >{this.state.CR_Requisicoes}</div>
 
-                <button onClick={() => this.ResetaCronometro()}>RESETAR</button>
+              {/*  <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
 
                 {/* <div id="chat">{this.state.CH_Chat}</div> */}
 {/* 

@@ -4,8 +4,9 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-//import Row from 'react-bootstrap/Row'
-import {Redirect, Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+
+
 
 class Login extends Component{
     constructor(props){
@@ -29,14 +30,12 @@ class Login extends Component{
         e.preventDefault()
         let NomeDoUsuario = this.state.nome
         axios.post('https://localhost:44327/api/autenticar/LogaUsuario', {NomeDoUsuario})
-        .then(res => {
-            console.log("res", res)
-            if(res.data.logado === true){
-                console.log("ta no if")
+        .then(res => {            
+            if(res.data.logado === true){                
                 localStorage.setItem("login", NomeDoUsuario);
                 this.props.history.push("/home");
             }
-            console.log("oi")
+            
         })
     }
 
