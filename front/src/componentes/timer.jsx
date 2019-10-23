@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import WebSocket from '../componentes/websocket'
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { getOuterBindingIdentifiers } from '@babel/types';
+import axios from 'axios'
 
 class Chat extends Component {
     constructor(props) {
@@ -11,7 +13,7 @@ class Chat extends Component {
             message: '',
             messages: [],
 
-            wsCronometro: null,
+            WebSocket: null,
             CR_Tempo: 0,
             CR_Requisicoes: 0,
 
@@ -33,22 +35,21 @@ class Chat extends Component {
     }
 
     componentWillMount() {
-        const conexao_wsCronometro = new HubConnectionBuilder()
-            .withUrl("http://localhost:5001/Cronometro")
+        const conexao_WebSocket = new HubConnectionBuilder()
+            .withUrl("http://localhost:5001/WebSocket")
             .build();
 
-        this.setState({ wsCronometro: conexao_wsCronometro });
+        this.setState({ WebSocket: conexao_WebSocket });
     }
 
     componentDidMount() {
         this.GeraIdentificador();
 
         // ########### CRONOMETRO ----------------
-        this.state.wsCronometro.start() // -> espera a conexão estabilizar
+        this.state.WebSocket.start() // -> espera a conexão estabilizar
             .then(() => {
-                this.state.wsCronometro.invoke("EstouLogado", this.state.Identificador);
-                console.log("to aqui");
-                this.state.wsCronometro.invoke("AtualizaCronometro");
+                this.state.WebSocket.invoke("EstouLogado", this.state.Identificador);
+                this.state.WebSocket.invoke("AtualizaCronometro");
 
                 // Lógica do cronometro no front
                 setInterval(function (_this) {
@@ -59,8 +60,15 @@ class Chat extends Component {
                         _this.setState({ CR_Tempo: t });
                     }
                     else {
-                        _this.state.wsCronometro.invoke("AtualizaCronometro");
+                        _this.state.WebSocket.invoke("AtualizaCronometro");
                     }
+
+                    // if(_this.state.CR_Tempo == 0){
+                    //     axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+                    //     .then(res => {
+            
+                    //     })
+                    // }
                 }, 1000, this);
 
                 // Mantém cronometro idêntico ao servidor
@@ -69,11 +77,11 @@ class Chat extends Component {
                     _requisicoes++;
 
                     _this.setState({ CR_Requisicoes: _requisicoes });
-                    _this.state.wsCronometro.invoke("AtualizaCronometro");
+                    _this.state.WebSocket.invoke("AtualizaCronometro");
                 }, 10000, this);
             });
 
-        this.state.wsCronometro.on("CR_RecebeTempoAtualizado", data => {
+        this.state.WebSocket.on("CR_RecebeTempoAtualizado", data => {
             let _tempo = this.state.CR_Tempo;
             let tempo = data;
             if (!(_tempo == tempo || _tempo == tempo + 1 || _tempo == tempo - 1) || tempo == 0) {
@@ -81,23 +89,22 @@ class Chat extends Component {
             }
         });
 
-        this.state.wsCronometro.on("CR_SolicitaLogados", () => {
-            this.state.wsCronometro.invoke("ReafirmaLogado", this.state.Identificador);
+        this.state.WebSocket.on("CR_SolicitaLogados", () => {
+            this.state.WebSocket.invoke("ReafirmaLogado", this.state.Identificador);
         });
 
         this.ResetaCronometro = function () {
-            this.state.wsCronometro.invoke("ResetaCronometro");
+            this.state.WebSocket.invoke("ResetaCronometro");
         }
     }
 
     render() {
         return (
             <div>
-
                 <div id="cronometro" >{this.state.CR_Tempo}</div>
-                <div id="requisicoes" >{this.state.CR_Requisicoes}</div>
+                {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 
-                <button onClick={() => this.ResetaCronometro()}>RESETAR</button>
+                {/* <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
 
                 {/* <div id="chat">{this.state.CH_Chat}</div> */}
 {/* 

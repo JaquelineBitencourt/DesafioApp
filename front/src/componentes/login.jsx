@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 //import Row from 'react-bootstrap/Row'
 import {Redirect, Link, withRouter } from 'react-router-dom'
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 
 class Login extends Component{
     constructor(props){
@@ -14,7 +15,7 @@ class Login extends Component{
         this.state = {
             nome:'',
             digitarNome: '',
-           
+           WebSocket: null,
            
         }
 
@@ -28,12 +29,13 @@ class Login extends Component{
     handleSubmit(e){
         e.preventDefault()
         let NomeDoUsuario = this.state.nome
-        axios.post('https://localhost:44327/api/autenticar/LogaUsuario', {NomeDoUsuario})
+        axios.post('https://localhost:44327/api/Usuario/LogaUsuario', {NomeDoUsuario})
         .then(res => {
             console.log("res", res)
             if(res.data.logado === true){
                 console.log("ta no if")
                 localStorage.setItem("login", NomeDoUsuario);
+                localStorage.setItem("idUsuario",res.data.idUsuario)
                 this.props.history.push("/home");
             }
             console.log("oi")

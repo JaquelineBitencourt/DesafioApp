@@ -4,117 +4,101 @@ import axios from 'axios'
 import Timer from '../../componentes/timer'
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import './paginaHome.css'
-
-
+import WebSocket from '../../componentes/websocket'
 
 class PaginaHome extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            pessoa: {
-                listaDeUsuarios: [],
-                error: null,
-                botaoTerminar: false,
-                nome: '',
-                chimarreador: ''
-
-
-            },
-            pessoapost: {
-                nome: null
-            },
-            segundos: '00',
-            minutos: '',
-            wsTerminar: null
+            informacoesPessoais: [],
+            listaDeUsuarios: [],
+            WebSocket: null
         }
     }
 
-
     componentWillMount() {
-        const conexao_wsTerminar = new HubConnectionBuilder()
-            .withUrl("http://localhost:5001/Usuario")
+        let id = localStorage.getItem("idUsuario")
+
+
+
+        let usuario = {
+            IdUsuario: id
+        }
+
+        // axios.post('https://localhost:44327/api/Usuario/BuscaUsuarioUnico', usuario)
+        // .then(res =>{
+        //     console.log(res.data)
+        
+        // })
+        
+
+        const conexao_WebSocket = new HubConnectionBuilder()
+            .withUrl("http://localhost:5001/WebSocket")
             .build();
 
-        this.setState({ wsTerminar: conexao_wsTerminar });
+        this.setState({ WebSocket: conexao_WebSocket })
 
-        // let user = localStorage.getItem("login")
-        // if (user == null) {
-        //     console.log("teste", user)
-        //     this.props.history.push("/");
-        // }
+        conexao_WebSocket.start() // -> espera a conexão estabilizar
+            .then(() => {
+                conexao_WebSocket.invoke("AtualizaDeslogados");
+            });
 
-        this.buscaUsuarios();
 
-    }
-
-    buscaUsuarios = () => {
-        axios.get('https://localhost:44327/api/autenticar/BuscaUsuarios')
-            .then(result => {
-
-                let state = this.state;
-                state.pessoa.listaDeUsuarios = result.data
-
-                this.setState(state);
-
-            },
-
-                (error) => {
-                    // this.setState({ error });
-                })
-
+        //logica de redirecionamento quando nao esta logado
+        let user = localStorage.getItem("login")
+        if (user == null) {
+            this.props.history.push("/");
+        }
 
     }
-
 
     componentDidMount() {
+        setInterval(function (_this) {
+            _this.state.WebSocket.invoke("AtualizaDeslogados");
+        }, 10000, this);
 
-        this.state.wsTerminar.start() // -> espera a conexão estabilizar
-        .then(() => {
-            this.state.wsTerminar.invoke("BuscaUsuario");
-        });
-
-        this.logaUsuario();
-
-        this.state.wsTerminar.on("RespostaBuscaUsuario",
-            data => {
-                console.log("chegouaqui", data)
-                let _p = this.state.pessoa;
-                _p.listaDeUsuarios = data;
-                
-                this.setState({pessoa:_p});
-                console.log(this.state.pessoa)
-            });
-    }
-
-
-
-    logaUsuario = () => {
-        let NomeDoUsuario = ""
-
-
-        axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
-            .then(result => {
-                let pessoapost = this.state.pessoapost
-                pessoapost.nome = result.data;
-                this.setState({ pessoapost: pessoapost })
-
-                this.buscaUsuarios();
-            })
-
-    }
-
-    btnProximo = () => {
-        
-        axios.get('https://localhost:44327/api/autenticar/ProximoChimarreando')
-        .then(res => {
+        this.state.WebSocket.on("ReafirmouLogados", data => {
+            this.state.WebSocket.invoke("BuscaUsuario");
+            console.log(data)
 
         })
-        this.state.wsTerminar.invoke("BuscaUsuario");
+
+        this.state.WebSocket.on("RetornoDeslogados",
+            data => {
+                let id = window.localStorage.getItem("idUsuario")
+                this.state.WebSocket.invoke("ReafirmaLogados", id);
+            });
+
+        this.state.WebSocket.on("RespostaBuscaUsuario",
+            data => {
+                this.setState({ listaDeUsuarios: data });
+                console.log(data.chimarreando)
+            });
+
+
     }
 
 
 
+    buscaUsuarios = () => {
+        axios.get('https://localhost:44327/api/Usuario/BuscaUsuarios')
+            .then(result => {
+                this.setState({ listaDeUsuarios: result.data })
+
+            })
+    }
+
+
+    btnProximo = () => {
+
+        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+            .then(res => {
+
+            })
+        this.state.WebSocket.invoke("BuscaUsuario");
+        this.state.WebSocket.invoke("ResetaCronometro")
+    }
 
     btnSetaChimarreando = (idUsuario) => {
 
@@ -122,44 +106,61 @@ class PaginaHome extends Component {
             IdUsuario: idUsuario
         }
 
-        axios.post('https://localhost:44327/api/autenticar/SetaChimarreando', parametroChimarreando)
+        axios.post('https://localhost:44327/api/Usuario/SetaChimarreando', parametroChimarreando)
             .then(result => {
                 // let chimarreador = this.state.chimarreador
                 // let a = result.data;
 
-                this.buscaUsuarios();
+                this.state.WebSocket.invoke("BuscaUsuario")
             })
     }
 
+    btnDeslogar = () => {
+        let id = localStorage.getItem("idUsuario")
+        let user = {
+            IdUsuario: id
+        }
 
+        axios.post('https://localhost:44327/api/Usuario/DeslogaUsuario', user)
+            .then(res => {
+                if (res.data === true) {
+                    this.state.WebSocket.invoke("BuscaUsuario")
+                    localStorage.removeItem("login")
+                    localStorage.removeItem("idUsuario")
+                    this.props.history.push("/");
+                }
+            })
+    }
 
-
-
-
-
+    btnTeste = () => {
+        this.state.WebSocket.invoke("AtualizaDeslogados");
+    }
     render() {
         return (
-
             <div className="pgnListaUsuarios">
+                {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
                 <Timer />
+
                 {/* <Chimarreador />     */}
                 <h3>Lista de participantes da roda do chimarrão</h3>
-
                 <ul>
                     {/* Exibindo apenas os usuários logados na tela  */}
-                    {this.state.pessoa.listaDeUsuarios.map((usuario, index) => (
+                    {this.state.listaDeUsuarios.map((usuario, index) => (
                         <a key={index}>
-                            {(usuario.logado && usuario.chimarreando) &&
+
+                            {(usuario.chimarreando) &&
                                 < p style={{ color: 'green' }}> {usuario.nomeDoUsuario} </p>
                             }
 
-                            {(usuario.logado && !usuario.chimarreando) &&
+                            {(!usuario.chimarreando) &&
                                 <p style={{ color: 'red' }}> {usuario.nomeDoUsuario} <input type="button" value="Setar chimarreando" onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /> </p>
                             }
                         </a>
                     ))}
                 </ul>
                 <p> <input type="button" value="Próximo" onClick={() => this.btnProximo()} /></p>
+                <button onClick={() => this.btnDeslogar()}>Deslogar</button>
+                {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
 
             </div >
 
