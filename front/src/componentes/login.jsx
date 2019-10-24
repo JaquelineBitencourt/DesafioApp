@@ -4,8 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
-//import Row from 'react-bootstrap/Row'
-import {Redirect, Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 
 class Login extends Component{
@@ -38,7 +37,7 @@ class Login extends Component{
                 localStorage.setItem("idUsuario",res.data.idUsuario)
                 this.props.history.push("/home");
             }
-            console.log("oi")
+            
         })
     }
 
