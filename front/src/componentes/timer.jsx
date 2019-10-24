@@ -3,7 +3,7 @@ import WebSocket from '../componentes/websocket'
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { getOuterBindingIdentifiers } from '@babel/types';
 import axios from 'axios'
-
+import moment from 'moment'
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +20,7 @@ class Chat extends Component {
             wsChat: null,
             CH_Chat: [],
             CH_Mensagem: '',
-
+            moment: null,
             Identificador: null
         };
     }
@@ -35,6 +35,7 @@ class Chat extends Component {
     }
 
     componentWillMount() {
+
         const conexao_WebSocket = new HubConnectionBuilder()
             .withUrl("http://localhost:5001/WebSocket")
             .build();
@@ -54,7 +55,6 @@ class Chat extends Component {
                 // Lógica do cronometro no front
                 setInterval(function (_this) {
                     let t = _this.state.CR_Tempo;
-
                     if (t > 0) {
                         t--;
                         _this.setState({ CR_Tempo: t });
@@ -66,7 +66,7 @@ class Chat extends Component {
                     // if(_this.state.CR_Tempo == 0){
                     //     axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
                     //     .then(res => {
-            
+
                     //     })
                     // }
                 }, 1000, this);
@@ -99,15 +99,18 @@ class Chat extends Component {
     }
 
     render() {
+        var tempo = moment("2015-01-01").startOf('day')
+        .seconds(this.state.CR_Tempo)
+        .format('mm:ss');
         return (
             <div>
-                <div id="cronometro" >{this.state.CR_Tempo}</div>
+                <div id="cronometro" >{tempo}</div>
                 {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 
                 {/* <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
 
                 {/* <div id="chat">{this.state.CH_Chat}</div> */}
-{/* 
+                {/* 
                 <input onChange={(e) => this.InputAlteracaoTexto(e)} />
                 <button onClick={() => this.ChatEnviaMensagem()}>Enviar</button> */}
             </div>

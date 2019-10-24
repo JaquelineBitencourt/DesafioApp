@@ -5,26 +5,21 @@ import Timer from '../../componentes/timer'
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import './paginaHome.css'
 import WebSocket from '../../componentes/websocket'
+import moment from 'moment'
 
 class PaginaHome extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            informacoesPessoais: [],
             listaDeUsuarios: [],
-            WebSocket: null
+            WebSocket: null,
+            timer: null
         }
     }
 
     componentWillMount() {
         let id = localStorage.getItem("idUsuario")
-
-
-
-        let usuario = {
-            IdUsuario: id
-        }
 
         // axios.post('https://localhost:44327/api/Usuario/BuscaUsuarioUnico', usuario)
         // .then(res =>{
@@ -54,13 +49,17 @@ class PaginaHome extends Component {
     }
 
     componentDidMount() {
+
+        this.state.WebSocket.on("teste", () => {
+
+        })
+
         setInterval(function (_this) {
             _this.state.WebSocket.invoke("AtualizaDeslogados");
         }, 10000, this);
 
         this.state.WebSocket.on("ReafirmouLogados", data => {
             this.state.WebSocket.invoke("BuscaUsuario");
-            console.log(data)
 
         })
 
@@ -73,7 +72,6 @@ class PaginaHome extends Component {
         this.state.WebSocket.on("RespostaBuscaUsuario",
             data => {
                 this.setState({ listaDeUsuarios: data });
-                console.log(data.chimarreando)
             });
 
 
@@ -133,9 +131,10 @@ class PaginaHome extends Component {
     }
 
     btnTeste = () => {
-        this.state.WebSocket.invoke("AtualizaDeslogados");
+
     }
     render() {
+
         return (
             <div className="pgnListaUsuarios">
                 {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
