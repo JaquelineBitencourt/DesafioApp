@@ -4,11 +4,8 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { getOuterBindingIdentifiers } from '@babel/types';
 import axios from 'axios'
 import moment from 'moment'
-<<<<<<< HEAD
 import Carregando from './loader'
-=======
 import './timer.css'
->>>>>>> a1cd8b4f65950163942fcc9fc8ab638063246468
 class Chat extends Component {
     constructor(props) {
         super(props);
