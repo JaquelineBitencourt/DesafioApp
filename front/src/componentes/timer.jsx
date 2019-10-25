@@ -4,6 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { getOuterBindingIdentifiers } from '@babel/types';
 import axios from 'axios'
 import moment from 'moment'
+import Carregando from './loader'
 import './timer.css'
 class Chat extends Component {
     constructor(props) {
@@ -25,6 +26,16 @@ class Chat extends Component {
             Identificador: null
         };
     }
+
+    MostrarLoading = () => this.setState({ loading: true })
+
+
+    EsconderLoading = (tempo) => {
+        setTimeout(() => {
+            this.setState({ loading: false })
+        }, tempo);
+    }
+
 
     GeraIdentificador = function () {
         let Guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -61,7 +72,14 @@ class Chat extends Component {
                         _this.setState({ CR_Tempo: t });
                     }
                     else {
+                        console.log("entrou")
+                        // this.MostrarLoading();
                         _this.state.WebSocket.invoke("AtualizaCronometro");
+                        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+                        .then(res => {
+                            this.state.WebSocket.invoke("BuscaUsuario")
+                            // this.EsconderLoading(1000)
+                        })
                     }
 
                     // if(_this.state.CR_Tempo == 0){
@@ -106,6 +124,7 @@ class Chat extends Component {
         return (
             <div className='timer'>
                 <div id="cronometro" >{tempo}</div>
+                <Carregando loading={this.state.loading} />
                 {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 
               {/*  <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
