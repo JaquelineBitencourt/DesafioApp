@@ -148,8 +148,9 @@ class PaginaHome extends Component {
                 <div className="listaParticipantes">
                 <Timer />
                 <Carregando loading={this.state.loading} />
-                {/* <Chimarreador />     */}
+               
                <ul>
+
                     {/* Exibindo apenas os usuários logados na tela  */}
                     {this.state.listaDeUsuarios.map((usuario, index) => (
                         <a key={index}>
@@ -157,6 +158,7 @@ class PaginaHome extends Component {
                             <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src="img\peopleAmarelo.png" alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
                                // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
                             }
+
 
                             {(usuario.logado && !usuario.chimarreando) &&
                              <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
@@ -168,16 +170,20 @@ class PaginaHome extends Component {
                     ))}
                 </ul>
 
+
                 <div className="botao">
                      <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
                      </div>
                  
+
                      {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
                 {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
-
-                
                
+
+
                 <div className="footer">&copy;Footer</div> 
+                
+
                
             </div >
 
