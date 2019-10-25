@@ -159,7 +159,7 @@ class PaginaHome extends Component {
                             {(usuario.logado && !usuario.chimarreando) &&
                              <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
                                 {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                                <input type="button" value="Setar chimarreando" 
+                                <input type="button" value="Chimarreando" 
                                 onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
                             }
                         </a>
