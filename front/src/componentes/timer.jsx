@@ -4,6 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { getOuterBindingIdentifiers } from '@babel/types';
 import axios from 'axios'
 import moment from 'moment'
+import './timer.css'
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -103,7 +104,7 @@ class Chat extends Component {
         .seconds(this.state.CR_Tempo)
         .format('mm:ss');
         return (
-            <div>
+            <div className='timer'>
                 <div id="cronometro" >{tempo}</div>
                 {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 

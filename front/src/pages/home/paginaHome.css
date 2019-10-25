@@ -1,4 +1,161 @@
-#home{
+.section{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-size: 100%;
+    
+ }
+ .header{
+     overflow: hidden;
+     background-color:rgb(31, 181, 98);;
+     padding: 0px 30px;
+ }
+
+
+ * {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+
+ .header a{
+     float: left;
+     color: black;
+     text-align: center;
+     padding: 12px;
+     text-decoration: none;
+     font-size: 18px;
+     height: 100px;
+	   line-height: 90px;
+	   white-space: nowrap; 
+ }
+
+ .header a.logo{
+    padding: 0px 20px;
+ }  
+/* 
+ .header a:hover{
+    background-color: dodgerblue;
+    color: white;
+ } */
+
+ .header-right {
+    float: right;
+  }
+
+  /* quando a tela tiver 500px de largura ou menos, empilha os links uns sobre os outros*/
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .header-right {
+    float: none;
+  }
+
+  h1 {
+    display:flex;
+  }
+
+}
+
+
+h1{
+    font-size: 24pt;
+    color:rgb(31, 181, 98);;
+    text-align: center;
+    justify-content:center;
+    align-items:center;
+    padding: 10px;
+
+}
+
+
+
+
+.listaParticipantes{
+   position: relative;
+   margin: 0px auto;
+   width: 375px;
+
+}
+
+.listaParticipantes ul{
+    /* border: 5px solid red; */
+    margin: 0px auto 0px auto;
+    padding: 0;   
+    height: auto; 
+    width: 375px;
+    
+}
+
+
+.listaParticipantes ul li{
+    list-style: none;
+    background:#f3f090;
+    margin-bottom:5px;
+    font: 12px verdana, arial, helvetiva, sans-serif;
+    text-align: left;
+    border-radius: 6px;
+    font-size: 18px;
+    padding: 10px 10px; 
+   
+
+}
+
+
+.botao input{
+    border:none;
+    margin: 0px auto 0px auto;
+    border-radius: 16px;
+    position: relative;
+    background-color: rgb(173, 108, 72);
+    color:white;
+    padding: 10px 20px 10px 20px;
+    font-family: 'Segoe UI';
+    font-weight: 500;
+    font-size: 14px;   
+    transition-duration: .4s;
+    width: 100px;
+    right: -125px;
+    left: 73%;
+    outline: 0;
+
+}
+
+
+.botao input:hover{
+  background-color: rgb(128, 73, 42);
+ 
+}
+
+
+.botao input:active{
+ background-color:#A66038 ;
+ 
+}
+
+
+
+        
+
+.footer{
+	  background: rgb(31, 181, 98);;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color:white;
+    text-align: center;
+}
+
+/* #home{
     position: absolute;
     background-color: whitesmoke;
-}
+} */
