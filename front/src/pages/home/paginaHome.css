@@ -115,7 +115,7 @@ h1{
     margin: 0px auto 0px auto;
     border-radius: 16px;
     position: relative;
-    background-color: rgb(173, 108, 72);
+    background-color: rgb(170, 125, 101);
     color:white;
     padding: 10px 20px 10px 20px;
     font-family: 'Segoe UI';
@@ -124,7 +124,7 @@ h1{
     transition-duration: .4s;
     width: 100px;
     right: -125px;
-    left: 73%;
+    left: 46%;
     outline: 0;
 
 }
@@ -140,8 +140,6 @@ h1{
  background-color:#A66038 ;
  
 }
-
-
 
         
 

@@ -167,8 +167,8 @@ class PaginaHome extends Component {
                 </ul>
 
                 <div className="botao">
-                    <p> <input type="button" value="Próximo" onClick={() => this.btnProximo()} /></p>
-                     <button onClick={() => this.btnDeslogar()}>Deslogar</button>
+                     <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
+                     <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/>
                 {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
 
                 </div>
