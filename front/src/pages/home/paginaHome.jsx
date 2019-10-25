@@ -22,17 +22,18 @@ class PaginaHome extends Component {
 
     MostrarLoading = () => this.setState({ loading: true })
 
-  
-    EsconderLoading = (tempo) => { setTimeout(() => {
-        this.setState({loading: false})
-      }, tempo);
+
+    EsconderLoading = (tempo) => {
+        setTimeout(() => {
+            this.setState({ loading: false })
+        }, tempo);
     }
 
 
 
     componentWillMount() {
         let id = localStorage.getItem("idUsuario")
-        
+
         let usuario = {
             IdUsuario: id
         }
@@ -40,9 +41,9 @@ class PaginaHome extends Component {
         // axios.post('https://localhost:44327/api/Usuario/BuscaUsuarioUnico', usuario)
         // .then(res =>{
         //     console.log(res.data)
-        
+
         // })
-        
+
 
         const conexao_WebSocket = new HubConnectionBuilder()
             .withUrl("http://localhost:5001/WebSocket")
@@ -61,17 +62,12 @@ class PaginaHome extends Component {
         if (user == null) {
             this.props.history.push("/");
         }
-    }   
-    
+    }
+
 
 
 
     componentDidMount() {
-
-        this.state.WebSocket.on("teste", () => {
-
-        })
-
         setInterval(function (_this) {
             _this.state.WebSocket.invoke("AtualizaDeslogados");
         }, 10000, this);
@@ -91,39 +87,13 @@ class PaginaHome extends Component {
             data => {
                 this.setState({ listaDeUsuarios: data });
             });
-
-
-    logaUsuario = () => {
-        let NomeDoUsuario = ""
-        
-        axios.post('https://localhost:44327/api/autenticar/LogaUsuario', { NomeDoUsuario })
-            .then(result => {
-                let pessoapost = this.state.pessoapost
-                pessoapost.nome = result.data;
-                this.setState({ pessoapost: pessoapost })
-                this.EsconderLoading(1000);
-                this.buscaUsuarios();
-            })
-        }    
-
     }
-
-
-
-    buscaUsuarios = () => {
-        axios.get('https://localhost:44327/api/Usuario/BuscaUsuarios')
-            .then(result => {
-                this.setState({ listaDeUsuarios: result.data })
-
-            })
-    }
-
 
     btnProximo = () => {
-        this.MostrarLoading(); 
+        this.MostrarLoading();
         axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
             .then(res => {
-                this.EsconderLoading(1000);
+                this.EsconderLoading(3000);
             })
         this.state.WebSocket.invoke("BuscaUsuario");
         this.state.WebSocket.invoke("ResetaCronometro")
@@ -138,7 +108,6 @@ class PaginaHome extends Component {
             .then(result => {
                 // let chimarreador = this.state.chimarreador
                 // let a = result.data;
-
                 this.state.WebSocket.invoke("BuscaUsuario")
             })
     }
@@ -159,20 +128,13 @@ class PaginaHome extends Component {
                 }
             })
     }
-    
-                 
-    btnTeste = () => {
-
-    }
-
 
     render() {
-
         return (
             <div className="pgnListaUsuarios">
                 {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
                 <Timer />
-                <Carregando loading={this.state.loading}/>
+                <Carregando loading={this.state.loading} />
                 {/* <Chimarreador />     */}
                 <h3>Lista de participantes da roda do chimarrão</h3>
                 <ul>
@@ -195,9 +157,8 @@ class PaginaHome extends Component {
                 {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
 
             </div >
-            
+
         )
     }
 }
-
 export default withRouter(PaginaHome)
