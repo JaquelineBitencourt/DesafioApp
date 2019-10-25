@@ -133,30 +133,53 @@ class PaginaHome extends Component {
 
     render() {
         return (
-            <div className="pgnListaUsuarios">
+            <div className="section">
                 {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
+                <div className="header">
+                    <a href="#" className="logo" ><img src="img\logoChimas.png" alt=""/></a>
+                    <div className="header-right">
+                        <a className="#active" href="#"></a>
+                        <a href="#sair"></a>
+                    </div>
+                </div>
+                <div className="col-md-12">
+                <h1>Roda de Chimarrão</h1>                
+                </div>
+                <div className="listaParticipantes">
                 <Timer />
                 <Carregando loading={this.state.loading} />
                 {/* <Chimarreador />     */}
-                <h3>Lista de participantes da roda do chimarrão</h3>
-                <ul>
+               <ul>
                     {/* Exibindo apenas os usuários logados na tela  */}
                     {this.state.listaDeUsuarios.map((usuario, index) => (
                         <a key={index}>
-
-                            {(usuario.chimarreando) &&
-                                < p style={{ color: 'green' }}> {usuario.nomeDoUsuario} </p>
+                            {(usuario.logado && usuario.chimarreando) &&
+                            <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src="img\peopleAmarelo.png" alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
+                               // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
                             }
 
-                            {(!usuario.chimarreando) &&
-                                <p style={{ color: 'red' }}> {usuario.nomeDoUsuario} <input type="button" value="Setar chimarreando" onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /> </p>
+                            {(usuario.logado && !usuario.chimarreando) &&
+                             <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
+                                {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
+                                <input type="button" value="Chimarreando" 
+                                onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
                             }
                         </a>
                     ))}
                 </ul>
-                <p> <input type="button" value="Próximo" onClick={() => this.btnProximo()} /></p>
-                <button onClick={() => this.btnDeslogar()}>Deslogar</button>
+
+                <div className="botao">
+                     <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
+                     <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/>
                 {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
+
+                </div>
+               
+                <div className="footer">&copy;Footer</div> 
+               
+            </div >
+
+
 
             </div >
 
