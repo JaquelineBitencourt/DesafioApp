@@ -70,7 +70,7 @@ class PaginaHome extends Component {
     componentDidMount() {
         setInterval(function (_this) {
             _this.state.WebSocket.invoke("AtualizaDeslogados");
-        }, 20000, this);
+        }, 21000, this);
 
         this.state.WebSocket.on("ReafirmouLogados", data => {
             this.state.WebSocket.invoke("BuscaUsuario");
@@ -89,13 +89,18 @@ class PaginaHome extends Component {
     }
 
     btnProximo = () => {
-        this.MostrarLoading();
-        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
-            .then(res => {
-                this.state.WebSocket.invoke("BuscaUsuario");
-                this.state.WebSocket.invoke("ResetaCronometro")
-                this.EsconderLoading(1000);
-            })
+        this.MostrarLoading()
+
+        setTimeout(function(_this){
+            _this.EsconderLoading(1000)
+        }, 1000, this)
+        // this.MostrarLoading();
+        // axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+        //     .then(res => {
+        //         this.state.WebSocket.invoke("BuscaUsuario");
+        //         this.state.WebSocket.invoke("ResetaCronometro")
+        //         this.EsconderLoading(1000);
+        this.state.WebSocket.invoke("ResetaCronometro")
         
     }
 

@@ -14,7 +14,7 @@ class Chat extends Component {
             nick: '',
             message: '',
             messages: [],
-
+            loading: false,
             WebSocket: null,
             CR_Tempo: 0,
             CR_Requisicoes: 0,
@@ -27,7 +27,9 @@ class Chat extends Component {
         };
     }
 
-    MostrarLoading = () => this.setState({ loading: true })
+    MostrarLoading = () => {
+        this.setState({ loading: true })
+    }
 
 
     EsconderLoading = (tempo) => {
@@ -47,7 +49,7 @@ class Chat extends Component {
     }
 
     componentWillMount() {
-
+        this.MostrarLoading()
         const conexao_WebSocket = new HubConnectionBuilder()
             .withUrl("http://localhost:5001/WebSocket")
             .build();
@@ -77,13 +79,17 @@ class Chat extends Component {
                         _this.state.WebSocket.invoke("AtualizaCronometro");
                     }
 
-                    // if(_this.state.CR_Tempo == 0){
-                    //     axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
-                    //     .then(res => {
-                    //         _this.state.WebSocket.invoke("BuscaUsuario")
-
-                    //     })
-                    // }
+                    if(_this.state.CR_Tempo == 0){
+                        let id = localstorage.getItem("idUsuario")
+                        let user = {
+                            idUsuario: id
+                        }
+                        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+                        .then(res => {
+                            _this.state.WebSocket.invoke("BuscaUsuario")
+                            console.log("123")
+                        })
+                    }
                 }, 1000, this);
 
                 // Mantém cronometro idêntico ao servidor
@@ -120,7 +126,6 @@ class Chat extends Component {
         return (
             <div className='timer'>
                 <div id="cronometro" >{tempo}</div>
-                <Carregando loading={this.state.loading} />
                 {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 
                 {/*  <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
