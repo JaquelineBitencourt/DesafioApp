@@ -93,10 +93,12 @@ class PaginaHome extends Component {
         this.MostrarLoading();
         axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
             .then(res => {
-                this.EsconderLoading(3000);
+                this.state.WebSocket.invoke("BuscaUsuario");
+                this.state.WebSocket.invoke("ResetaCronometro")
+                this.EsconderLoading(1000);
             })
-        this.state.WebSocket.invoke("BuscaUsuario");
-        this.state.WebSocket.invoke("ResetaCronometro")
+        
+        
     }
 
     btnSetaChimarreando = (idUsuario) => {
