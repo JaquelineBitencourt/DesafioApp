@@ -53,6 +53,8 @@ class Chat extends Component {
             .build();
 
         this.setState({ WebSocket: conexao_WebSocket });
+
+
     }
 
     componentDidMount() {
@@ -72,19 +74,13 @@ class Chat extends Component {
                         _this.setState({ CR_Tempo: t });
                     }
                     else {
-                        console.log("entrou")
-                        // this.MostrarLoading();
                         _this.state.WebSocket.invoke("AtualizaCronometro");
-                        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
-                        .then(res => {
-                            this.state.WebSocket.invoke("BuscaUsuario")
-                            // this.EsconderLoading(1000)
-                        })
                     }
 
                     // if(_this.state.CR_Tempo == 0){
                     //     axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
                     //     .then(res => {
+                    //         _this.state.WebSocket.invoke("BuscaUsuario")
 
                     //     })
                     // }
@@ -119,15 +115,15 @@ class Chat extends Component {
 
     render() {
         var tempo = moment("2015-01-01").startOf('day')
-        .seconds(this.state.CR_Tempo)
-        .format('mm:ss');
+            .seconds(this.state.CR_Tempo)
+            .format('mm:ss');
         return (
             <div className='timer'>
                 <div id="cronometro" >{tempo}</div>
                 <Carregando loading={this.state.loading} />
                 {/* <div id="requisicoes" >{this.state.CR_Requisicoes}</div> */}
 
-              {/*  <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
+                {/*  <button onClick={() => this.ResetaCronometro()}>RESETAR</button> */}
 
                 {/* <div id="chat">{this.state.CH_Chat}</div> */}
                 {/* 

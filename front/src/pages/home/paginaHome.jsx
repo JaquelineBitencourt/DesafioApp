@@ -70,11 +70,10 @@ class PaginaHome extends Component {
     componentDidMount() {
         setInterval(function (_this) {
             _this.state.WebSocket.invoke("AtualizaDeslogados");
-        }, 10000, this);
+        }, 20000, this);
 
         this.state.WebSocket.on("ReafirmouLogados", data => {
             this.state.WebSocket.invoke("BuscaUsuario");
-
         })
 
         this.state.WebSocket.on("RetornoDeslogados",
@@ -97,7 +96,6 @@ class PaginaHome extends Component {
                 this.state.WebSocket.invoke("ResetaCronometro")
                 this.EsconderLoading(1000);
             })
-        
         
     }
 
