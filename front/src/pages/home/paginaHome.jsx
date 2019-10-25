@@ -137,7 +137,7 @@ class PaginaHome extends Component {
                     <a href="#" className="logo" ><img src="img\logoChimas.png" alt=""/></a>
                     <div className="header-right">
                         <a className="#active" href="#"></a>
-                        <a href="#sair"></a>
+                        <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()}/>
                     </div>
                 </div>
                 <div className="col-md-12">
@@ -159,7 +159,7 @@ class PaginaHome extends Component {
                             {(usuario.logado && !usuario.chimarreando) &&
                              <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
                                 {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                                <input type="button" value="Chimarreando" 
+                                <input id="btnChimarreando" type="button" value="Chimarrear" 
                                 onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
                             }
                         </a>
@@ -168,10 +168,12 @@ class PaginaHome extends Component {
 
                 <div className="botao">
                      <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
-                     <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/>
+                     </div>
+                 
+                     {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
                 {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
 
-                </div>
+                
                
                 <div className="footer">&copy;Footer</div> 
                
