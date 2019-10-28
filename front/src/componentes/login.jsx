@@ -14,8 +14,10 @@ class Login extends Component{
         this.state = {
             nome:'',
             digitarNome: '',
-           WebSocket: null,
-           
+            WebSocket: null,
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
+            //https://localhost:44327/api/Usuario/
+            //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         }
 
     }
@@ -28,7 +30,7 @@ class Login extends Component{
     handleSubmit(e){
         e.preventDefault()
         let NomeDoUsuario = this.state.nome
-        axios.post('https://localhost:44327/api/Usuario/LogaUsuario', {NomeDoUsuario})
+        axios.post(this.state.Conexao_API + "LogaUsuario", {NomeDoUsuario})
         .then(res => {
             console.log("res", res)
             if(res.data.logado === true){

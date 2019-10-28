@@ -16,7 +16,13 @@ class PaginaHome extends Component {
         this.state = {
             listaDeUsuarios: [],
             WebSocket: null,
-            timer: null
+            timer: null,
+            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
+            //http://localhost:5001/WebSocket
+            // https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/",
+            //https://localhost:44327/api/Usuario/
+            // https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         }
     }
 
@@ -46,7 +52,7 @@ class PaginaHome extends Component {
 
 
         const conexao_WebSocket = new HubConnectionBuilder()
-            .withUrl("http://localhost:5001/WebSocket")
+            .withUrl(this.state.Conexao_WS)
             .build();
 
         this.setState({ WebSocket: conexao_WebSocket })
@@ -109,7 +115,7 @@ class PaginaHome extends Component {
             IdUsuario: idUsuario
         }
 
-        axios.post('https://localhost:44327/api/Usuario/SetaChimarreando', parametroChimarreando)
+        axios.post(this.state.Conexao_API + "SetaChimarreando", parametroChimarreando)
             .then(result => {
                 // let chimarreador = this.state.chimarreador
                 // let a = result.data;
@@ -123,7 +129,7 @@ class PaginaHome extends Component {
             IdUsuario: id
         }
 
-        axios.post('https://localhost:44327/api/Usuario/DeslogaUsuario', user)
+        axios.post(this.state.Conexao_API + "DeslogaUsuario", user)
             .then(res => {
                 if (res.data === true) {
                     this.state.WebSocket.invoke("BuscaUsuario")

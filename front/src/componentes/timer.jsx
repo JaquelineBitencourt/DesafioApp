@@ -23,7 +23,13 @@ class Chat extends Component {
             CH_Chat: [],
             CH_Mensagem: '',
             moment: null,
-            Identificador: null
+            Identificador: null,
+            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
+            //http://localhost:5001/WebSocket
+            //https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
+            //https://localhost:44327/api/Usuario/
+            //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         };
     }
 
@@ -51,7 +57,7 @@ class Chat extends Component {
     componentWillMount() {
         this.MostrarLoading()
         const conexao_WebSocket = new HubConnectionBuilder()
-            .withUrl("http://localhost:5001/WebSocket")
+            .withUrl(this.state.Conexao_WS)
             .build();
 
         this.setState({ WebSocket: conexao_WebSocket });
@@ -80,14 +86,13 @@ class Chat extends Component {
                     }
 
                     if(_this.state.CR_Tempo == 0){
-                        let id = localstorage.getItem("idUsuario")
-                        let user = {
-                            idUsuario: id
-                        }
-                        axios.get('https://localhost:44327/api/Usuario/ProximoChimarreando')
+                        // let id = localstorage.getItem("idUsuario")
+                        // let user = {
+                        //     idUsuario: id
+                        // }
+                        axios.get(_this.state.Conexao_API + "ProximoChimarreando")
                         .then(res => {
                             _this.state.WebSocket.invoke("BuscaUsuario")
-                            console.log("123")
                         })
                     }
                 }, 1000, this);
