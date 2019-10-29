@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+//require('../src/componentes/login')
 // Mantém a referência global do objeto da janela.
 // se você não fizer isso,
 // a janela será fechada automaticamente
@@ -16,7 +17,9 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadURL('http://localhost:3000')
+  win.loadURL('https://evolucaodesenv.safeweb.com.br/Ximas/build/index.html')
+  //Caminho pasta: \\mate\wwwroot\EVOLUCAODESENV\Ximas\XimasFront
+  
 
 
   // Open the DevTools.

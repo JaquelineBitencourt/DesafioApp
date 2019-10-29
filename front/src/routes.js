@@ -28,9 +28,9 @@ export default class Routes extends React.Component {
     render() {
         return (
          <React.Fragment>
-            <Switch>
-                <Route exact path="/" component = {PaginaLogin}/>
+            <Switch>                
                 <Route path="/home" component = {PaginaHome}/>
+                <Route path="/" component = {PaginaLogin}/>
             </Switch>
          </React.Fragment>
      )

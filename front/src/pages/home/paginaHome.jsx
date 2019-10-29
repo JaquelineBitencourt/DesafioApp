@@ -7,6 +7,10 @@ import './paginaHome.css'
 import WebSocket from '../../componentes/websocket'
 import moment from 'moment'
 import Carregando from '../../componentes/loader'
+import logoChimas from '../../assets/img/logoChimas.png'
+import pessoaAmarelo from '../../assets/img/peopleAmarelo.png'
+import pessoaVerde from '../../assets/img/peopleVerde.png'
+
 
 
 class PaginaHome extends Component {
@@ -23,6 +27,8 @@ class PaginaHome extends Component {
             Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/",
             //https://localhost:44327/api/Usuario/
             // https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
+                
+            
         }
     }
 
@@ -139,13 +145,13 @@ class PaginaHome extends Component {
                 }
             })
     }
-
+            
     render() {
         return (
             <div className="section">
                 {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
                 <div className="header">
-                    <a href="#" className="logo" ><img src="img\logoChimas.png" alt=""/></a>
+                    <a href="#" className="logo" ><img src={logoChimas} alt=""/></a>
                     <div className="header-right">
                         <a className="#active" href="#"></a>
                         <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()}/>
@@ -164,13 +170,13 @@ class PaginaHome extends Component {
                     {this.state.listaDeUsuarios.map((usuario, index) => (
                         <a key={index}>
                             {(usuario.logado && usuario.chimarreando) &&
-                            <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src="img\peopleAmarelo.png" alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
+                            <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src={pessoaAmarelo} alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
                                // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
                             }
 
 
                             {(usuario.logado && !usuario.chimarreando) &&
-                             <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
+                             <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
                                 {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
                                 <input id="btnChimarreando" type="button" value="Chimarrear" 
                                 onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
