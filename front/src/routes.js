@@ -1,11 +1,8 @@
 import React from 'react';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
 import PaginaLogin from './pages/login/paginaLogin';
 import PaginaHome from './pages/home/paginaHome';
-
 import { Switch, Route } from 'react-router-dom';
 
 // export const Routes = () => {
@@ -17,7 +14,6 @@ import { Switch, Route } from 'react-router-dom';
 //         </Switch>
 //     )
 // }
-
 
 export default class Routes extends React.Component {
 
@@ -35,7 +31,5 @@ export default class Routes extends React.Component {
          </React.Fragment>
      )
     }
-
-    
 }
 

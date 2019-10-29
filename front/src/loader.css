@@ -1,15 +1,14 @@
-  #root {
+  #loader {
     background-color: rgba(255,255,255,0.8);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;    
-    z-index: 1;   
-    
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    z-index: 9999;
+    background-image: url('../src/assets/img/cuia006.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
 }
-
-
-
-    
-  

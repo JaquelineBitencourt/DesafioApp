@@ -6,7 +6,7 @@ const { app, BrowserWindow } = require('electron')
 // quando o objeto JavaScript for coletado como lixo.
 let win
 
-function createWindow () {
+function createWindow() {
   // Criar uma janela de navegação.
   win = new BrowserWindow({
     width: 800,
@@ -17,10 +17,10 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadURL('https://evolucaodesenv.safeweb.com.br/Ximas/build/index.html')
+  //win.loadURL('https://evolucaodesenv.safeweb.com.br/Ximas/build/index.html')
+  const path = require('path');
+  win.loadURL(`file://${path.resolve(__dirname, '..', 'build', 'index.html')}`);
   //Caminho pasta: \\mate\wwwroot\EVOLUCAODESENV\Ximas\XimasFront
-  
-
 
   // Open the DevTools.
   win.webContents.openDevTools()
@@ -29,7 +29,7 @@ function createWindow () {
   win.on('closed', () => {
     // Elimina a referência do objeto da janela, geralmente você iria armazenar as janelas
     // em um array, se seu app suporta várias janelas, este é o momento
-    // quando você deve excluir o elemento correspondente.
+    // quando você deve excluir o elemento correspondente.
     win = null
   })
 }

@@ -1,19 +1,11 @@
 import React from 'react'
-import '../loader.css'   
-import FiguraCuia from './cuia006.gif' 
+import '../loader.css'
 
-
-
-const Carregando = ({loading}) => {    
+const Carregando = ({ loading }) => {
     return loading ? (
-                <div id="root">               
-                    <img src={FiguraCuia} />
-                </div>
-
-) : null
-
+        <div id="loader">
+        </div>
+    ) : null
 }
-
-
 
 export default Carregando
