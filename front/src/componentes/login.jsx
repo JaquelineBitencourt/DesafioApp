@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 
 class Login extends Component{
     constructor(props){
@@ -15,12 +14,13 @@ class Login extends Component{
             nome:'',
             digitarNome: '',
             WebSocket: null,
-            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
+            Conexao_API: "https://localhost:44327/api/Usuario/"
             //https://localhost:44327/api/Usuario/
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         }
 
     }
+
 
     handleChange(e){
         this.setState({nome: e.target.value})
@@ -32,9 +32,7 @@ class Login extends Component{
         let NomeDoUsuario = this.state.nome
         axios.post(this.state.Conexao_API + "LogaUsuario", {NomeDoUsuario})
         .then(res => {
-            console.log("res", res)
             if(res.data.logado === true){
-                console.log("ta no if")
                 localStorage.setItem("login", NomeDoUsuario);
                 localStorage.setItem("idUsuario",res.data.idUsuario)
                 this.props.history.push("/home");

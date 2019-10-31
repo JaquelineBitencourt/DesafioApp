@@ -1,33 +1,19 @@
 import React, { Component } from 'react';
-import WebSocket from '../componentes/websocket'
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
-import { getOuterBindingIdentifiers } from '@babel/types';
+import {HubConnectionBuilder } from '@aspnet/signalr';
 import axios from 'axios'
 import moment from 'moment'
-import Carregando from './loader'
 import './timer.css'
 class Chat extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            nick: '',
-            message: '',
-            messages: [],
             loading: false,
-            WebSocket: null,
             CR_Tempo: 0,
-            CR_Requisicoes: 0,
-
-            wsChat: null,
-            CH_Chat: [],
-            CH_Mensagem: '',
-            moment: null,
-            Identificador: null,
-            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
+            Conexao_WS: "http://localhost:5001/WebSocket",
             //http://localhost:5001/WebSocket
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
-            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
+            Conexao_API: "https://localhost:44327/api/Usuario/"
             //https://localhost:44327/api/Usuario/
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         };
@@ -44,16 +30,6 @@ class Chat extends Component {
         }, tempo);
     }
 
-
-    GeraIdentificador = function () {
-        let Guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-
-        this.setState({ Identificador: Guid });
-    }
-
     componentWillMount() {
         this.MostrarLoading()
         const conexao_WebSocket = new HubConnectionBuilder()
@@ -66,12 +42,10 @@ class Chat extends Component {
     }
 
     componentDidMount() {
-        this.GeraIdentificador();
 
         // ########### CRONOMETRO ----------------
         this.state.WebSocket.start() // -> espera a conexão estabilizar
             .then(() => {
-                this.state.WebSocket.invoke("EstouLogado", this.state.Identificador);
                 this.state.WebSocket.invoke("AtualizaCronometro");
 
                 // Lógica do cronometro no front
@@ -85,7 +59,7 @@ class Chat extends Component {
                         _this.state.WebSocket.invoke("AtualizaCronometro");
                     }
 
-                    if(_this.state.CR_Tempo == 0){
+                    if(_this.state.CR_Tempo === 0){
                         // let id = localstorage.getItem("idUsuario")
                         // let user = {
                         //     idUsuario: id
@@ -110,13 +84,9 @@ class Chat extends Component {
         this.state.WebSocket.on("CR_RecebeTempoAtualizado", data => {
             let _tempo = this.state.CR_Tempo;
             let tempo = data;
-            if (!(_tempo == tempo || _tempo == tempo + 1 || _tempo == tempo - 1) || tempo == 0) {
+            if (!(_tempo === tempo || _tempo === tempo + 1 || _tempo === tempo - 1) || tempo === 0) {
                 this.setState({ CR_Tempo: tempo });
             }
-        });
-
-        this.state.WebSocket.on("CR_SolicitaLogados", () => {
-            this.state.WebSocket.invoke("ReafirmaLogado", this.state.Identificador);
         });
 
         this.ResetaCronometro = function () {

@@ -4,8 +4,6 @@ import axios from 'axios'
 import Timer from '../../componentes/timer'
 import { HubConnectionBuilder } from '@aspnet/signalr'
 import './paginaHome.css'
-import WebSocket from '../../componentes/websocket'
-import moment from 'moment'
 import Carregando from '../../componentes/loader'
 import logoChimas from '../../assets/img/logoChimas.png'
 import pessoaAmarelo from '../../assets/img/peopleAmarelo.png'
@@ -18,17 +16,18 @@ class PaginaHome extends Component {
         super(props)
 
         this.state = {
+            connectionId: null,
             listaDeUsuarios: [],
             WebSocket: null,
             timer: null,
-            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
+            Conexao_WS: "http://localhost:5001/WebSocket",
             //http://localhost:5001/WebSocket
             // https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
-            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/",
+            Conexao_API: "https://localhost:44327/api/Usuario/",
             //https://localhost:44327/api/Usuario/
             // https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
-                
-            
+
+
         }
     }
 
@@ -46,17 +45,6 @@ class PaginaHome extends Component {
     componentWillMount() {
         let id = localStorage.getItem("idUsuario")
 
-        let usuario = {
-            IdUsuario: id
-        }
-
-        // axios.post('https://localhost:44327/api/Usuario/BuscaUsuarioUnico', usuario)
-        // .then(res =>{
-        //     console.log(res.data)
-
-        // })
-
-
         const conexao_WebSocket = new HubConnectionBuilder()
             .withUrl(this.state.Conexao_WS)
             .build();
@@ -65,8 +53,22 @@ class PaginaHome extends Component {
 
         conexao_WebSocket.start() // -> espera a conexão estabilizar
             .then(() => {
-                conexao_WebSocket.invoke("AtualizaDeslogados");
+                conexao_WebSocket.invoke("GetConnectionId")
+                conexao_WebSocket.invoke("BuscaUsuario");
             });
+
+        conexao_WebSocket.on("RespostaConnectionId", data => {
+            let objUser = {
+                IdUsuario: id,
+                ConnectionId: data
+            }
+            axios.post(this.state.Conexao_API + "SetaConnectionId", objUser)
+                .then(() => {
+                    this.state.WebSocket.invoke("BuscaUsuario")
+                })
+
+            this.setState({ connectionId: data })
+        })
 
 
         //logica de redirecionamento quando nao esta logado
@@ -80,19 +82,15 @@ class PaginaHome extends Component {
 
 
     componentDidMount() {
-        setInterval(function (_this) {
-            _this.state.WebSocket.invoke("AtualizaDeslogados");
-        }, 21000, this);
 
-        this.state.WebSocket.on("ReafirmouLogados", data => {
-            this.state.WebSocket.invoke("BuscaUsuario");
+        this.state.WebSocket.on("Disconectou", () => {
+            this.state.WebSocket.invoke("BuscaUsuario")
         })
 
-        this.state.WebSocket.on("RetornoDeslogados",
-            data => {
-                let id = window.localStorage.getItem("idUsuario")
-                this.state.WebSocket.invoke("ReafirmaLogados", id);
-            });
+        this.state.WebSocket.on("Conectou", () => {
+            console.log("oi")
+            this.state.WebSocket.invoke("BuscaUsuario")
+        })
 
         this.state.WebSocket.on("RespostaBuscaUsuario",
             data => {
@@ -103,7 +101,7 @@ class PaginaHome extends Component {
     btnProximo = () => {
         this.MostrarLoading()
 
-        setTimeout(function(_this){
+        setTimeout(function (_this) {
             _this.EsconderLoading(1000)
         }, 1000, this)
         // this.MostrarLoading();
@@ -113,7 +111,7 @@ class PaginaHome extends Component {
         //         this.state.WebSocket.invoke("ResetaCronometro")
         //         this.EsconderLoading(1000);
         this.state.WebSocket.invoke("ResetaCronometro")
-        
+
     }
 
     btnSetaChimarreando = (idUsuario) => {
@@ -145,62 +143,75 @@ class PaginaHome extends Component {
                 }
             })
     }
-            
+
     render() {
         return (
             <div className="section">
                 {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
                 <div className="header">
-                    <a href="#" className="logo" ><img src={logoChimas} alt=""/></a>
+                    <a href="#" className="logo" ><img src={logoChimas} alt="" /></a>
                     <div className="header-right">
                         <a className="#active" href="#"></a>
-                        <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()}/>
+                        <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()} />
                     </div>
                 </div>
                 <div className="col-md-12">
-                <h1>Roda de Chimarrão</h1>                
+                    <h1>Roda de Chimarrão</h1>
                 </div>
                 <div className="listaParticipantes">
-                <Timer />
-                <Carregando loading={this.state.loading} />
-               
-               <ul>
+                    <Timer />
+                    <Carregando loading={this.state.loading} />
 
                     {/* Exibindo apenas os usuários logados na tela  */}
                     {this.state.listaDeUsuarios.map((usuario, index) => (
                         <a key={index}>
                             {(usuario.logado && usuario.chimarreando) &&
-                            <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src={pessoaAmarelo} alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
-                               // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
+                                <li style={{ color: '#F2E205', backgroundColor: '#1fb562' }}><img src={pessoaAmarelo} alt="pessoaAmarelo" /> {usuario.nomeDoUsuario} </li>
+                                // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
                             }
 
+                            {/* Exibindo apenas os usuários logados na tela  */}
+                            {this.state.listaDeUsuarios.map((usuario, index) => (
+                                <a key={index}>
+                                    {(usuario.logado && usuario.chimarreando) &&
+                                        <li style={{ color: '#F2E205', backgroundColor: '#1fb562' }}><img src="img\peopleAmarelo.png" alt="pessoaAmarelo" /> {usuario.nomeDoUsuario} </li>
+                                        // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
+                                    }
+
+                                    {(usuario.logado && !usuario.chimarreando) &&
+                                        <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{ left: '50%' }} /> {usuario.nomeDoUsuario}
+                                            {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
+                                            <input id="btnChimarreando" type="button" value="Chimarrear"
+                                                onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
+                                    }
+                                </a>
+                            ))}
 
                             {(usuario.logado && !usuario.chimarreando) &&
-                             <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
-                                {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                                <input id="btnChimarreando" type="button" value="Chimarrear" 
-                                onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
+                                <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{ left: '50%' }} /> {usuario.nomeDoUsuario}
+                                    {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
+                                    <input id="btnChimarreando" type="button" value="Chimarrear"
+                                        onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
                             }
                         </a>
                     ))}
-                </ul>
 
 
-                <div className="botao">
-                     <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
-                     </div>
-                 
-
-                     {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
-                {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
-               
+                    <div className="botao">
+                        <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
+                    </div>
 
 
-                <div className="footer">&copy;Footer</div> 
-                
+                    {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
+                    {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
 
-               
-            </div >
+
+
+                    <div className="footer">&copy;Footer</div>
+
+
+
+                </div >
 
 
 
