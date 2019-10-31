@@ -10,10 +10,10 @@ class Chat extends Component {
         this.state = {
             loading: false,
             CR_Tempo: 0,
-            Conexao_WS: "http://localhost:5001/WebSocket",
+            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
             //http://localhost:5001/WebSocket
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
-            Conexao_API: "https://localhost:44327/api/Usuario/"
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
             //https://localhost:44327/api/Usuario/
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         };

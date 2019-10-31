@@ -14,7 +14,7 @@ class Login extends Component{
             nome:'',
             digitarNome: '',
             WebSocket: null,
-            Conexao_API: "https://localhost:44327/api/Usuario/"
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/"
             //https://localhost:44327/api/Usuario/
             //https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
         }

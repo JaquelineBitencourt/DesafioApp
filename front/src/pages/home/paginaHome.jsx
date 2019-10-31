@@ -20,10 +20,10 @@ class PaginaHome extends Component {
             listaDeUsuarios: [],
             WebSocket: null,
             timer: null,
-            Conexao_WS: "http://localhost:5001/WebSocket",
+            Conexao_WS: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket",
             //http://localhost:5001/WebSocket
             // https://evolucaodesenv.safeweb.com.br/Ximas/XimasWS/WebSocket
-            Conexao_API: "https://localhost:44327/api/Usuario/",
+            Conexao_API: "https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/",
             //https://localhost:44327/api/Usuario/
             // https://evolucaodesenv.safeweb.com.br/Ximas/XimasApi/Api/Usuario/
 
@@ -147,75 +147,62 @@ class PaginaHome extends Component {
     render() {
         return (
             <div className="section">
-                {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
-                <div className="header">
-                    <a href="#" className="logo" ><img src={logoChimas} alt="" /></a>
-                    <div className="header-right">
-                        <a className="#active" href="#"></a>
-                        <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()} />
-                    </div>
+            {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
+            <div className="header">
+                <a href="#" className="logo" ><img src={logoChimas} alt=""/></a>
+                <div className="header-right">
+                    <a className="#active" href="#"></a>
+                    <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()}/>
                 </div>
-                <div className="col-md-12">
-                    <h1>Roda de Chimarrão</h1>
-                </div>
-                <div className="listaParticipantes">
-                    <Timer />
-                    <Carregando loading={this.state.loading} />
+            </div>
+            <div className="col-md-12">
+            <h1>Roda de Chimarrão</h1>                
+            </div>
+            <div className="listaParticipantes">
+            <Timer />
+            <Carregando loading={this.state.loading} />
+           
+           <ul>
 
-                    {/* Exibindo apenas os usuários logados na tela  */}
-                    {this.state.listaDeUsuarios.map((usuario, index) => (
-                        <a key={index}>
-                            {(usuario.logado && usuario.chimarreando) &&
-                                <li style={{ color: '#F2E205', backgroundColor: '#1fb562' }}><img src={pessoaAmarelo} alt="pessoaAmarelo" /> {usuario.nomeDoUsuario} </li>
-                                // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
-                            }
-
-                            {/* Exibindo apenas os usuários logados na tela  */}
-                            {this.state.listaDeUsuarios.map((usuario, index) => (
-                                <a key={index}>
-                                    {(usuario.logado && usuario.chimarreando) &&
-                                        <li style={{ color: '#F2E205', backgroundColor: '#1fb562' }}><img src="img\peopleAmarelo.png" alt="pessoaAmarelo" /> {usuario.nomeDoUsuario} </li>
-                                        // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
-                                    }
-
-                                    {(usuario.logado && !usuario.chimarreando) &&
-                                        <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{ left: '50%' }} /> {usuario.nomeDoUsuario}
-                                            {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                                            <input id="btnChimarreando" type="button" value="Chimarrear"
-                                                onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
-                                    }
-                                </a>
-                            ))}
-
-                            {(usuario.logado && !usuario.chimarreando) &&
-                                <li style={{ color: '#02732A' }}><img src="img\peopleVerde.png" alt="pessoaVerde" style={{ left: '50%' }} /> {usuario.nomeDoUsuario}
-                                    {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                                    <input id="btnChimarreando" type="button" value="Chimarrear"
-                                        onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
-                            }
-                        </a>
-                    ))}
+                {/* Exibindo apenas os usuários logados na tela  */}
+                {this.state.listaDeUsuarios.map((usuario, index) => (
+                    <a key={index}>
+                        {(usuario.logado && usuario.chimarreando) &&
+                        <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src={pessoaAmarelo} alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
+                           // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
+                        }
 
 
-                    <div className="botao">
-                        <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
-                    </div>
+                        {(usuario.logado && !usuario.chimarreando) &&
+                         <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
+                            {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
+                            <input id="btnChimarreando" type="button" value="Chimarrear" 
+                            onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
+                        }
+                    </a>
+                ))}
+            </ul>
 
 
-                    {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
-                    {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
+            <div className="botao">
+                 <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
+                 </div>
+             
+
+                 {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
+            {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
+           
+
+
+            <div className="footer">&copy;Footer</div> 
+            
+
+           
+        </div >
 
 
 
-                    <div className="footer">&copy;Footer</div>
-
-
-
-                </div >
-
-
-
-            </div >
+        </div >
 
         )
     }
