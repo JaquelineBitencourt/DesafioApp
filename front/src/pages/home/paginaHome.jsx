@@ -6,8 +6,9 @@ import { HubConnectionBuilder } from '@aspnet/signalr'
 import './paginaHome.css'
 import Carregando from '../../componentes/loader'
 import logoChimas from '../../assets/img/logoChimas.png'
+import setaChimarreando from '../../assets/img/setaChimarreando.png'
 import pessoaAmarelo from '../../assets/img/peopleAmarelo.png'
-import pessoaVerde from '../../assets/img/peopleVerde.png'
+import logoff from '../../assets/img/logoff.png'
 
 
 
@@ -146,63 +147,62 @@ class PaginaHome extends Component {
 
     render() {
         return (
-            <div className="section">
-            {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
-            <div className="header">
-                <a href="#" className="logo" ><img src={logoChimas} alt=""/></a>
-                <div className="header-right">
-                    <a className="#active" href="#"></a>
-                    <input id="btnSair" type="button" value="Sair" onClick={() => this.btnDeslogar()}/>
-                </div>
-            </div>
-            <div className="col-md-12">
-            <h1>Roda de Chimarrão</h1>                
-            </div>
-            <div className="listaParticipantes">
-            <Timer />
-            <Carregando loading={this.state.loading} />
-           
-           <ul>
+            <div>
+                {/* <WebSocket onRef={ref => (this.webSocket = ref)} webSocket={ref => (this.wsWebSocket = ref)} /> */}
 
-                {/* Exibindo apenas os usuários logados na tela  */}
-                {this.state.listaDeUsuarios.map((usuario, index) => (
-                    <a key={index}>
-                        {(usuario.logado && usuario.chimarreando) &&
-                        <li style={{ color: '#F2E205', backgroundColor:'#1fb562'}}><img src={pessoaAmarelo} alt="pessoaAmarelo"/> {usuario.nomeDoUsuario} </li>
-                           // <li style={{ color: '#F2E205', backgroundColor:'green' }}> {usuario.nomeDoUsuario} </li>
-                        }
+                {/* Cabeçalho da página */}
+                <header className="cabecalho">
+                    
+                        <img id="logoChimas" src={logoChimas} alt=""/>
+                        {/* <a href="#" className="logo" ><img src={logoChimas} alt=""/></a> */}
+                 
+                    <div className="menu">
+                        <div className="botao"> 
+                                    <div className="navbar-header float-right">
+                                        {/* Sair<img src={ logoff } onClick={() => this.btnDeslogar()}></img> */}
+                                         <button type="button" id="btnSair" className="btn btn-primary"><img src={ logoff } style={{textAlign:'center'}} onClick={() => this.btnDeslogar()}></img></button>
+                                    </div>
+                            </div>
+                        </div>
+                </header>
 
 
-                        {(usuario.logado && !usuario.chimarreando) &&
-                         <li style={{ color: '#02732A' }}><img src={pessoaVerde} alt="pessoaVerde" style={{left:'50%'}}/> {usuario.nomeDoUsuario}
-                            {/* <li style={{ color: '#02732A' }}> {usuario.nomeDoUsuario}</li> */}
-                            <input id="btnChimarreando" type="button" value="Chimarrear" 
-                            onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }} /></li>
-                        }
-                    </a>
-                ))}
-            </ul>
+                <main className="conteudo">
+                    <div className="titulo">
+                        <div className="container" >
+                            <h1>Roda de Chimarrão</h1>                
+                        </div>
+                    </div>
+                    
+                 {/* O Css do relógio está em componentes -> timer.css */}
+                    <ul className="list-group" id="listaParticipantes">
+                    <Timer />
+                    <Carregando loading={this.state.loading} />
+
+                        {/* Exibindo apenas os usuários logados na tela  */}
+                        {this.state.listaDeUsuarios.map((usuario, index) => (
+                            <a key={index}>
+                            {(usuario.logado && usuario.chimarreando) &&
+                            <li className="list-group-item active"><img src={setaChimarreando} alt="pessoaQueEstaChimarreando"/> {usuario.nomeDoUsuario} </li>
+                            }
 
 
-            <div className="botao">
-                 <input type="button" value="Próximo" onClick={() => this.btnProximo()} />
-                 </div>
-             
+                                    {(usuario.logado && !usuario.chimarreando) &&
+                                    <li className="list-group-item"><img src={pessoaAmarelo} alt="pessoaAmarelo" /> {usuario.nomeDoUsuario}
+                                    <button type="button" className="btn btn-outline-success"style={{left:'47%'}} onClick={() => { this.btnSetaChimarreando(usuario.idUsuario) }}>
+                                        Chimarrear</button></li>
+                                    }
+                                </a>
+                            ))}
+                    </ul>
 
-                 {/* <input type="button" value="Deslogar" onClick={() => this.btnDeslogar()}/> */}
-            {/* <button onClick={() => this.btnTeste()}>Teste</button> */}
-           
-
-
-            <div className="footer">&copy;Footer</div> 
-            
-
-           
-        </div >
-
-
-
-        </div >
+                
+                    <div className="container" id="btnProximo">
+                        <button type="button" class="btn btn-outline-success" onClick={() => this.btnProximo()}>Próximo</button>
+                    </div>
+               
+                </main>
+            </div >
 
         )
     }
