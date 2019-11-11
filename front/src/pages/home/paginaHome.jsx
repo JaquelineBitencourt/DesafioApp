@@ -89,7 +89,6 @@ class PaginaHome extends Component {
         })
 
         this.state.WebSocket.on("Conectou", () => {
-            console.log("oi")
             this.state.WebSocket.invoke("BuscaUsuario")
         })
 
@@ -124,9 +123,38 @@ class PaginaHome extends Component {
             .then(result => {
                 // let chimarreador = this.state.chimarreador
                 // let a = result.data;
-                this.state.WebSocket.invoke("BuscaUsuario")
+                this.state.WebSocket.invoke("ResetaCronometro");
+                this.state.WebSocket.invoke("BuscaUsuario");
             })
     }
+
+
+    // btnSetaChimarreando = (idUsuario) => {
+    //     let parametroChimarreando = {
+    //         IdUsuario: idUsuario
+    //     }
+
+    //     axios.post(this.state.Conexao_API + "SetaChimarreando", parametroChimarreando)
+    //         .then(result => {
+    //             // let chimarreador = this.state.chimarreador
+    //             // let a = result.data;
+
+    //             if(){
+    //                 this.state.WebSocket.invoke("ResetaCronometro") 
+    //             }else{
+    //             this.state.WebSocket.invoke("BuscaUsuario")
+    //         }
+    //         })
+    // }
+
+
+
+
+
+
+
+
+
 
     btnDeslogar = () => {
         let id = localStorage.getItem("idUsuario")
@@ -198,7 +226,7 @@ class PaginaHome extends Component {
 
                 
                     <div className="container" id="btnProximo">
-                        <button type="button" class="btn btn-outline-success" onClick={() => this.btnProximo()}>Próximo</button>
+                        <button type="button" className="btn btn-outline-success" onClick={() => this.btnProximo()}>Próximo</button>
                     </div>
                
                 </main>
